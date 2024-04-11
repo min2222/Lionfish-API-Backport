@@ -29,7 +29,7 @@ public class AdvancedModelPart extends BasicModelPart {
     public float scaleX = 1.0F, scaleY = 1.0F, scaleZ = 1.0F;
     public float opacity = 1.0F;
     public boolean scaleChildren;
-    private final Model model;
+    private final AdvancedEntityModel model;
     private AdvancedModelPart parent;
     private boolean doubleSided = true;
     private boolean hasLighting = true;
@@ -44,90 +44,68 @@ public class AdvancedModelPart extends BasicModelPart {
     private Matrix3f mat3Override;
     private Matrix4f mat4Override;
 
-    public AdvancedModelPart(BasicModelBase model) {
-        this(model, 0, 0);
-    }
+    public String boxName = "";
 
-    public AdvancedModelPart(BasicModelBase model, int textureOffsetX, int textureOffsetY) {
-        super(model, textureOffsetX, textureOffsetY);
-        this.model = model;
+    public AdvancedModelPart(AdvancedEntityModel model, String name) {
+        super(model);
         this.textureWidth = model.texWidth;
         this.textureHeight = model.texHeight;
-        this.textureOffsetX = textureOffsetX;
-        this.textureOffsetY = textureOffsetY;
-        this.cubeList = new ObjectArrayList<>();
-        this.childModels = new ObjectArrayList<>();
+        this.model = model;
+        this.cubeList = new ObjectArrayList();
+        this.childModels = new ObjectArrayList();
+        this.boxName = name;
     }
 
-    public AdvancedModelPart(AdvancedModelPart copyFrom) {
-        this(copyFrom.getAdvancedModel(), copyFrom.textureOffsetX, copyFrom.textureOffsetY);
-        this.rotationPointX = copyFrom.rotationPointX;
-        this.rotationPointY = copyFrom.rotationPointY;
-        this.rotationPointZ = copyFrom.rotationPointZ;
-        this.rotateAngleX = copyFrom.rotateAngleX;
-        this.rotateAngleY = copyFrom.rotateAngleY;
-        this.rotateAngleZ = copyFrom.rotateAngleZ;
-        this.scaleX = copyFrom.scaleX;
-        this.scaleY = copyFrom.scaleY;
-        this.scaleZ = copyFrom.scaleZ;
-        this.defaultPositionX = copyFrom.defaultPositionX;
-        this.defaultPositionY = copyFrom.defaultPositionY;
-        this.defaultPositionZ = copyFrom.defaultPositionZ;
-        this.defaultRotationX = copyFrom.defaultRotationX;
-        this.defaultRotationY = copyFrom.defaultRotationY;
-        this.defaultRotationZ = copyFrom.defaultRotationZ;
-
-        this.scaleChildren = copyFrom.scaleChildren;
-        this.cubeList.addAll(copyFrom.cubeList);
-        this.childModels = copyFrom.childModels;
+    public AdvancedModelPart(AdvancedEntityModel model) {
+        this(model, null);
+        this.textureWidth = model.texWidth;
+        this.textureHeight = model.texHeight;
+        this.cubeList = new ObjectArrayList();
+        this.childModels = new ObjectArrayList();
     }
 
-    @Override
-    public BasicModelPart setTextureSize(int textureWidthIn, int textureHeightIn) {
-        textureWidth = textureWidthIn;
-        textureHeight = textureHeightIn;
-        return super.setTextureSize(textureWidthIn, textureHeightIn);
+    public AdvancedModelPart(AdvancedEntityModel model, int textureOffsetX, int textureOffsetY) {
+        this(model);
+        this.textureWidth = model.texWidth;
+        this.textureHeight = model.texHeight;
+        this.setTextureOffset(textureOffsetX, textureOffsetY);
+        this.cubeList = new ObjectArrayList();
+        this.childModels = new ObjectArrayList();
     }
 
-    @Override
-    public BasicModelPart setTextureOffset(int x, int y) {
-        textureOffsetX = x;
-        textureOffsetY = y;
-        return super.setTextureOffset(x, y);
-    }
-
-    /*public AdvancedModelRenderer add3DTexture(float posX, float posY, float posZ, int width, int height) {
-        this.cubeList.add(new Model3DTexture(this, this.textureOffsetX, this.textureOffsetY, posX, posY, posZ, width, height));
+    public BasicModelPart setTexSize(int p_78787_1_, int p_78787_2_) {
+        this.textureWidth = (float)p_78787_1_;
+        this.textureHeight = (float)p_78787_2_;
         return this;
-    }*/
+    }
 
-    public AdvancedModelPart addBox(String partName, float x, float y, float z, int width, int height, int depth, float delta, int texX, int texY) {
-      this.setTextureSize(texX, texY);
-      this.addBox(this.textureOffsetX, this.textureOffsetY, x, y, z, (float)width, (float)height, (float)depth, delta, delta, delta, this.mirror, false);
-      return this;
-   }
+    public BasicModelPart addBox(String p_217178_1_, float p_217178_2_, float p_217178_3_, float p_217178_4_, int p_217178_5_, int p_217178_6_, int p_217178_7_, float p_217178_8_, int p_217178_9_, int p_217178_10_) {
+        this.setTextureOffset(p_217178_9_, p_217178_10_);
+        this.addBox(this.textureOffsetX, this.textureOffsetY, p_217178_2_, p_217178_3_, p_217178_4_, (float)p_217178_5_, (float)p_217178_6_, (float)p_217178_7_, p_217178_8_, p_217178_8_, p_217178_8_, this.mirror, false);
+        return this;
+    }
 
-   public AdvancedModelPart addBox(float x, float y, float z, float width, float height, float depth) {
-      this.addBox(this.textureOffsetX, this.textureOffsetY, x, y, z, width, height, depth, 0.0F, 0.0F, 0.0F, this.mirror, false);
-      return this;
-   }
+    public BasicModelPart addBox(float p_228300_1_, float p_228300_2_, float p_228300_3_, float p_228300_4_, float p_228300_5_, float p_228300_6_) {
+        this.addBox(this.textureOffsetX, this.textureOffsetY, p_228300_1_, p_228300_2_, p_228300_3_, p_228300_4_, p_228300_5_, p_228300_6_, 0.0F, 0.0F, 0.0F, this.mirror, false);
+        return this;
+    }
 
-   public AdvancedModelPart addBox(float x, float y, float z, float width, float height, float depth, boolean mirrorIn) {
-      this.addBox(this.textureOffsetX, this.textureOffsetY, x, y, z, width, height, depth, 0.0F, 0.0F, 0.0F, mirrorIn, false);
-      return this;
-   }
+    public BasicModelPart addBox(float p_228304_1_, float p_228304_2_, float p_228304_3_, float p_228304_4_, float p_228304_5_, float p_228304_6_, boolean p_228304_7_) {
+        this.addBox(this.textureOffsetX, this.textureOffsetY, p_228304_1_, p_228304_2_, p_228304_3_, p_228304_4_, p_228304_5_, p_228304_6_, 0.0F, 0.0F, 0.0F, p_228304_7_, false);
+        return this;
+    }
 
-   public void addBox(float x, float y, float z, float width, float height, float depth, float delta) {
-      this.addBox(this.textureOffsetX, this.textureOffsetY, x, y, z, width, height, depth, delta, delta, delta, this.mirror, false);
-   }
+    public void addBox(float p_228301_1_, float p_228301_2_, float p_228301_3_, float p_228301_4_, float p_228301_5_, float p_228301_6_, float p_228301_7_) {
+        this.addBox(this.textureOffsetX, this.textureOffsetY, p_228301_1_, p_228301_2_, p_228301_3_, p_228301_4_, p_228301_5_, p_228301_6_, p_228301_7_, p_228301_7_, p_228301_7_, this.mirror, false);
+    }
 
-   public void addBox(float x, float y, float z, float width, float height, float depth, float deltaX, float deltaY, float deltaZ) {
-      this.addBox(this.textureOffsetX, this.textureOffsetY, x, y, z, width, height, depth, deltaX, deltaY, deltaZ, this.mirror, false);
-   }
+    public void addBox(float p_228302_1_, float p_228302_2_, float p_228302_3_, float p_228302_4_, float p_228302_5_, float p_228302_6_, float p_228302_7_, float p_228302_8_, float p_228302_9_) {
+        this.addBox(this.textureOffsetX, this.textureOffsetY, p_228302_1_, p_228302_2_, p_228302_3_, p_228302_4_, p_228302_5_, p_228302_6_, p_228302_7_, p_228302_8_, p_228302_9_, this.mirror, false);
+    }
 
-   public void addBox(float x, float y, float z, float width, float height, float depth, float delta, boolean mirrorIn) {
-      this.addBox(this.textureOffsetX, this.textureOffsetY, x, y, z, width, height, depth, delta, delta, delta, mirrorIn, false);
-   }
+    public void addBox(float p_228303_1_, float p_228303_2_, float p_228303_3_, float p_228303_4_, float p_228303_5_, float p_228303_6_, float p_228303_7_, boolean p_228303_8_) {
+        this.addBox(this.textureOffsetX, this.textureOffsetY, p_228303_1_, p_228303_2_, p_228303_3_, p_228303_4_, p_228303_5_, p_228303_6_, p_228303_7_, p_228303_7_, p_228303_7_, p_228303_8_, false);
+    }
 
    private void addBox(int texOffX, int texOffY, float x, float y, float z, float width, float height, float depth, float deltaX, float deltaY, float deltaZ, boolean mirror, boolean p_228305_13_) {
       this.cubeList.add(new ModelBox(texOffX, texOffY, x, y, z, width, height, depth, deltaX, deltaY, deltaZ, mirror, this.textureWidth, this.textureHeight));
@@ -298,8 +276,8 @@ public class AdvancedModelPart extends BasicModelPart {
         }
     }
 
-    public AdvancedEntityModel getAdvancedModel() {
-        return (AdvancedEntityModel) this.model;
+    public AdvancedEntityModel getModel() {
+        return this.model;
     }
 
     private float calculateRotation(float speed, float degree, boolean invert, float offset, float weight, float f, float f1) {

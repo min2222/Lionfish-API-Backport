@@ -31,46 +31,29 @@ public class BasicModelPart {
     public float rotateAngleZ;
     public boolean mirror;
     public boolean showModel;
-    public final ObjectList<ModelBox> cubeList;
-    public final ObjectList<BasicModelPart> childModels;
+    private final ObjectList<BasicModelPart.ModelBox> cubeList = new ObjectArrayList<>();
+    private final ObjectList<BasicModelPart> childModels = new ObjectArrayList<>();
 
     public BasicModelPart(BasicModelBase model) {
-        this.textureWidth = 64.0F;
-        this.textureHeight = 32.0F;
-        this.showModel = true;
-        this.cubeList = new ObjectArrayList();
-        this.childModels = new ObjectArrayList();
-        model.accept(this);
         this.setTextureSize(model.texWidth, model.texHeight);
     }
 
-    public BasicModelPart(BasicModelBase model, int p_i46358_2_, int p_i46358_3_) {
-        this(model.texWidth, model.texHeight, p_i46358_2_, p_i46358_3_);
-        model.accept(this);
+    public BasicModelPart(BasicModelBase model, int texOffX, int texOffY) {
+        this(model.texWidth, model.texHeight, texOffX, texOffY);
     }
 
-    public BasicModelPart(int p_i225949_1_, int p_i225949_2_, int p_i225949_3_, int p_i225949_4_) {
-        this.textureWidth = 64.0F;
-        this.textureHeight = 32.0F;
-        this.showModel = true;
-        this.cubeList = new ObjectArrayList();
-        this.childModels = new ObjectArrayList();
-        this.setTextureSize(p_i225949_1_, p_i225949_2_);
-        this.setTextureOffset(p_i225949_3_, p_i225949_4_);
+    public BasicModelPart(int textureWidthIn, int textureHeightIn, int textureOffsetXIn, int textureOffsetYIn) {
+        this.setTextureSize(textureWidthIn, textureHeightIn);
+        this.setTextureOffset(textureOffsetXIn, textureOffsetYIn);
     }
 
     private BasicModelPart() {
-        this.textureWidth = 64.0F;
-        this.textureHeight = 32.0F;
-        this.showModel = true;
-        this.cubeList = new ObjectArrayList();
-        this.childModels = new ObjectArrayList();
     }
 
     public BasicModelPart getModelAngleCopy() {
-        BasicModelPart lvt_1_1_ = new BasicModelPart();
-        lvt_1_1_.copyModelAngles(this);
-        return lvt_1_1_;
+        BasicModelPart BasicModelPart = new BasicModelPart();
+        BasicModelPart.copyModelAngles(this);
+        return BasicModelPart;
     }
 
     public void copyModelAngles(BasicModelPart p_217177_1_) {
