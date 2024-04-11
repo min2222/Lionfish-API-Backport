@@ -1,0 +1,14 @@
+modLoader="javafml" #mandatory
+loaderVersion="[47,)" #mandatory (26 is current forge version)
+license="All rights reserved"
+[[mods]] #mandatory
+modId="lionfishapi" #mandatory
+version="1.0" #mandatory
+displayName="LionfishAPI" #mandatory
+description='''HELLO'''
+[[dependencies.lionfishapi]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47.0.34,)"
+    ordering="NONE"
+    side="BOTH"
