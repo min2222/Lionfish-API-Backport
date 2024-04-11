@@ -41,11 +41,11 @@ public class BasicModelPart {
         this.cubeList = new ObjectArrayList();
         this.childModels = new ObjectArrayList();
         model.accept(this);
-        this.setTextureSize(model.textureWidth, model.textureHeight);
+        this.setTextureSize(model.texWidth, model.texHeight);
     }
 
     public BasicModelPart(BasicModelBase model, int p_i46358_2_, int p_i46358_3_) {
-        this(model.textureWidth, model.textureHeight, p_i46358_2_, p_i46358_3_);
+        this(model.texWidth, model.texHeight, p_i46358_2_, p_i46358_3_);
         model.accept(this);
     }
 

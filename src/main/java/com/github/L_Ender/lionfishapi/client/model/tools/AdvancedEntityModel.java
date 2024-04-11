@@ -20,6 +20,8 @@ import java.util.function.Function;
 public abstract class AdvancedEntityModel<T extends Entity> extends BasicModelBase<T> {
 
     private float movementScale = 1.0F;
+    public int texWidth = 32;
+    public int texHeight = 32;
 
     protected AdvancedEntityModel() {
         super();
@@ -33,9 +35,9 @@ public abstract class AdvancedEntityModel<T extends Entity> extends BasicModelBa
      * Sets the default pose to the current pose of this model
      */
     public void updateDefaultPose() {
-        this.boxList.stream().filter(modelRenderer -> modelRenderer instanceof AdvancedModelPart).forEach(modelRenderer -> {
-            AdvancedModelPart advancedModelRenderer = (AdvancedModelPart) modelRenderer;
-            advancedModelRenderer.updateDefaultPose();
+        this.getAllParts().forEach(modelRenderer -> {
+            AdvancedModelPart advancedRendererModel = (AdvancedModelPart) modelRenderer;
+            advancedRendererModel.updateDefaultPose();
         });
     }
 

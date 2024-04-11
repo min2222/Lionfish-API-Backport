@@ -51,8 +51,8 @@ public class AdvancedModelPart extends BasicModelPart {
     public AdvancedModelPart(BasicModelBase model, int textureOffsetX, int textureOffsetY) {
         super(model, textureOffsetX, textureOffsetY);
         this.model = model;
-        this.textureWidth = model.textureWidth;
-        this.textureHeight = model.textureHeight;
+        this.textureWidth = model.texWidth;
+        this.textureHeight = model.texHeight;
         this.textureOffsetX = textureOffsetX;
         this.textureOffsetY = textureOffsetY;
         this.cubeList = new ObjectArrayList<>();
