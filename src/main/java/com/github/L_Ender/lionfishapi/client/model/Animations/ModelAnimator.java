@@ -1,7 +1,7 @@
 package com.github.L_Ender.lionfishapi.client.model.Animations;
 
 import com.github.L_Ender.lionfishapi.client.model.Transform;
-import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.server.animation.Animation;
 import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
 import net.minecraft.client.Minecraft;
@@ -21,8 +21,8 @@ public class ModelAnimator {
     private int prevTempTick;
     private boolean correctAnimation;
     private IAnimatedEntity entity;
-    private HashMap<AdvancedModelPart, Transform> transformMap;
-    private HashMap<AdvancedModelPart, Transform> prevTransformMap;
+    private HashMap<AdvancedModelBox, Transform> transformMap;
+    private HashMap<AdvancedModelBox, Transform> prevTransformMap;
 
     public ModelAnimator() {
         this.tempTick = 0;
@@ -111,7 +111,7 @@ public class ModelAnimator {
      * @param y   the y rotation
      * @param z   the z rotation
      */
-    public void rotate(AdvancedModelPart box, float x, float y, float z) {
+    public void rotate(AdvancedModelBox box, float x, float y, float z) {
         if (!this.correctAnimation) {
             return;
         }
@@ -126,14 +126,14 @@ public class ModelAnimator {
      * @param y   the y offset
      * @param z   the z offset
      */
-    public void move(AdvancedModelPart box, float x, float y, float z) {
+    public void move(AdvancedModelBox box, float x, float y, float z) {
         if (!this.correctAnimation) {
             return;
         }
         this.getTransform(box).addOffset(x, y, z);
     }
 
-    private Transform getTransform(AdvancedModelPart box) {
+    private Transform getTransform(AdvancedModelBox box) {
         return this.transformMap.computeIfAbsent(box, b -> new Transform());
     }
 
@@ -152,7 +152,7 @@ public class ModelAnimator {
 
         if (animationTick >= this.prevTempTick && animationTick < this.tempTick) {
             if (stationary) {
-                for (AdvancedModelPart box : this.prevTransformMap.keySet()) {
+                for (AdvancedModelBox box : this.prevTransformMap.keySet()) {
                     Transform transform = this.prevTransformMap.get(box);
                     box.rotateAngleX += transform.getRotationX();
                     box.rotateAngleY += transform.getRotationY();
@@ -164,7 +164,7 @@ public class ModelAnimator {
             } else {
                 float tick = (animationTick - this.prevTempTick + Minecraft.getInstance().getFrameTime()) / (this.tempTick - this.prevTempTick);
                 float inc = Mth.sin((float) (tick * Math.PI / 2.0F)), dec = 1.0F - inc;
-                for (AdvancedModelPart box : this.prevTransformMap.keySet()) {
+                for (AdvancedModelBox box : this.prevTransformMap.keySet()) {
                     Transform transform = this.prevTransformMap.get(box);
                     box.rotateAngleX += dec * transform.getRotationX();
                     box.rotateAngleY += dec * transform.getRotationY();
@@ -173,7 +173,7 @@ public class ModelAnimator {
                     box.rotationPointY += dec * transform.getOffsetY();
                     box.rotationPointZ += dec * transform.getOffsetZ();
                 }
-                for (AdvancedModelPart box : this.transformMap.keySet()) {
+                for (AdvancedModelBox box : this.transformMap.keySet()) {
                     Transform transform = this.transformMap.get(box);
                     box.rotateAngleX += inc * transform.getRotationX();
                     box.rotateAngleY += inc * transform.getRotationY();
