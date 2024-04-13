@@ -14,7 +14,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod.EventBusSubscriber(modid = LionfishAPI.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-
     public void init() {
        // FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerEvent::onAddLayers);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticles);

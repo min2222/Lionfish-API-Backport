@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "lionfishapi.refmap.json",
   "mixins": [
+    "EntityMixin"
   ],
   "client": [
     "client.ItemBlockRenderTypesMixin"
