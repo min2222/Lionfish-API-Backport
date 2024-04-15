@@ -2,6 +2,7 @@ package com.github.L_Ender.lionfishapi;
 
 import com.github.L_Ender.lionfishapi.client.event.ClientSetUp;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

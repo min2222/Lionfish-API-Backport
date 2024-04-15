@@ -1,5 +1,6 @@
 package com.github.L_Ender.lionfishapi.client.model.tools;
 
+import com.github.L_Ender.lionfishapi.client.util.LFRenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -7,12 +8,13 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
+
+import java.lang.Math;
 
 /**
  * An enhanced RendererModel
@@ -32,13 +34,14 @@ public class AdvancedModelBox extends BasicModelPart {
     private AdvancedModelBox parent;
     private int displayList;
     private boolean compiled;
-    public ObjectList<TabulaModelRenderUtils.ModelBox> cubeList;
+    public ObjectList<LionfishModelRenderUtils.ModelBox> cubeList;
     public ObjectList<BasicModelPart> childModels;
     private float textureWidth;
     private float textureHeight;
     public float offsetX;
     public float offsetY;
     public float offsetZ;
+    private boolean isHidden = false;
     public String boxName = "";
 
     public AdvancedModelBox(AdvancedEntityModel model, String name) {
@@ -67,6 +70,30 @@ public class AdvancedModelBox extends BasicModelPart {
         this.cubeList = new ObjectArrayList();
         this.childModels = new ObjectArrayList();
     }
+
+    public AdvancedModelBox(AdvancedModelBox copyFrom) {
+        this(copyFrom.getModel(), copyFrom.textureOffsetX, copyFrom.textureOffsetY);
+        this.rotationPointX = copyFrom.rotationPointX;
+        this.rotationPointY = copyFrom.rotationPointY;
+        this.rotationPointZ = copyFrom.rotationPointZ;
+        this.rotateAngleX = copyFrom.rotateAngleX;
+        this.rotateAngleY = copyFrom.rotateAngleY;
+        this.rotateAngleZ = copyFrom.rotateAngleZ;
+        this.scaleX = copyFrom.scaleX;
+        this.scaleY = copyFrom.scaleY;
+        this.scaleZ = copyFrom.scaleZ;
+        this.defaultPositionX = copyFrom.defaultPositionX;
+        this.defaultPositionY = copyFrom.defaultPositionY;
+        this.defaultPositionZ = copyFrom.defaultPositionZ;
+        this.defaultRotationX = copyFrom.defaultRotationX;
+        this.defaultRotationY = copyFrom.defaultRotationY;
+        this.defaultRotationZ = copyFrom.defaultRotationZ;
+
+        this.scaleChildren = copyFrom.scaleChildren;
+        this.cubeList.addAll(copyFrom.cubeList);
+        this.childModels = copyFrom.childModels;
+    }
+
 
     public BasicModelPart setTexSize(int p_78787_1_, int p_78787_2_) {
         this.textureWidth = (float)p_78787_1_;
@@ -103,7 +130,7 @@ public class AdvancedModelBox extends BasicModelPart {
     }
 
     private void addBox(int p_228305_1_, int p_228305_2_, float p_228305_3_, float p_228305_4_, float p_228305_5_, float p_228305_6_, float p_228305_7_, float p_228305_8_, float p_228305_9_, float p_228305_10_, float p_228305_11_, boolean p_228305_12_, boolean p_228305_13_) {
-        this.cubeList.add(new TabulaModelRenderUtils.ModelBox(p_228305_1_, p_228305_2_, p_228305_3_, p_228305_4_, p_228305_5_, p_228305_6_, p_228305_7_, p_228305_8_, p_228305_9_, p_228305_10_, p_228305_11_, p_228305_12_, this.textureWidth, this.textureHeight));
+        this.cubeList.add(new LionfishModelRenderUtils.ModelBox(p_228305_1_, p_228305_2_, p_228305_3_, p_228305_4_, p_228305_5_, p_228305_6_, p_228305_7_, p_228305_8_, p_228305_9_, p_228305_10_, p_228305_11_, p_228305_12_, this.textureWidth, this.textureHeight));
     }
 
 
@@ -141,6 +168,14 @@ public class AdvancedModelBox extends BasicModelPart {
 
     public void setScaleZ(float scaleZ) {
         this.scaleZ = scaleZ;
+    }
+
+    public void setIsHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
     }
 
     /**
@@ -276,12 +311,12 @@ public class AdvancedModelBox extends BasicModelPart {
         ObjectListIterator var11 = this.cubeList.iterator();
 
         while(var11.hasNext()) {
-            TabulaModelRenderUtils.ModelBox lvt_12_1_ = (TabulaModelRenderUtils.ModelBox)var11.next();
-            TabulaModelRenderUtils.TexturedQuad[] var13 = lvt_12_1_.quads;
+            LionfishModelRenderUtils.ModelBox lvt_12_1_ = (LionfishModelRenderUtils.ModelBox)var11.next();
+            LionfishModelRenderUtils.TexturedQuad[] var13 = lvt_12_1_.quads;
             int var14 = var13.length;
 
             for(int var15 = 0; var15 < var14; ++var15) {
-                TabulaModelRenderUtils.TexturedQuad lvt_16_1_ = var13[var15];
+                LionfishModelRenderUtils.TexturedQuad lvt_16_1_ = var13[var15];
                 Vector3f lvt_17_1_ = new Vector3f(lvt_16_1_.normal);
                 lvt_17_1_.mul(lvt_10_1_);
                 float lvt_18_1_ = lvt_17_1_.x();
@@ -289,7 +324,7 @@ public class AdvancedModelBox extends BasicModelPart {
                 float lvt_20_1_ = lvt_17_1_.z();
 
                 for(int lvt_21_1_ = 0; lvt_21_1_ < 4; ++lvt_21_1_) {
-                    TabulaModelRenderUtils.PositionTextureVertex lvt_22_1_ = lvt_16_1_.vertexPositions[lvt_21_1_];
+                    LionfishModelRenderUtils.PositionTextureVertex lvt_22_1_ = lvt_16_1_.vertexPositions[lvt_21_1_];
                     float lvt_23_1_ = lvt_22_1_.position.x() / 16.0F;
                     float lvt_24_1_ = lvt_22_1_.position.y() / 16.0F;
                     float lvt_25_1_ = lvt_22_1_.position.z() / 16.0F;
@@ -395,6 +430,43 @@ public class AdvancedModelBox extends BasicModelPart {
         this.offsetX += ((to.offsetX - this.offsetX) / maxTime) * timer;
         this.offsetY += ((to.offsetY - this.offsetY) / maxTime) * timer;
         this.offsetZ += ((to.offsetZ - this.offsetZ) / maxTime) * timer;
+    }
+
+    public Vec3 getWorldPos(Entity entity, float delta) {
+        PoseStack matrixStack = new PoseStack();
+        float dx = (float) (entity.xOld + (entity.getX() - entity.xOld) * delta);
+        float dy = (float) (entity.yOld + (entity.getY() - entity.yOld) * delta);
+        float dz = (float) (entity.zOld + (entity.getZ() - entity.zOld) * delta);
+        matrixStack.translate(dx, dy, dz);
+        float dYaw = Mth.rotLerp(delta, entity.yRotO, entity.getYRot());
+        matrixStack.mulPose((new Quaternionf()).rotationY( -dYaw + 180));
+        matrixStack.scale(-1, -1, 1);
+        matrixStack.translate(0, -1.5f, 0);
+        LFRenderUtils.matrixStackFromModel(matrixStack, this);
+        PoseStack.Pose matrixEntry = matrixStack.last();
+        Matrix4f matrix4f = matrixEntry.pose();
+        Vector4f vec = matrix4f.transform(new Vector4f(0, 0, 0, 1.0F));
+        return new Vec3(vec.x(), vec.y(), vec.z());
+    }
+
+    public void setWorldPos(Entity entity, Vec3 worldPos, float delta) {
+        PoseStack matrixStack = new PoseStack();
+        float dx = (float) (entity.xOld + (entity.getX() - entity.xOld) * delta);
+        float dy = (float) (entity.yOld + (entity.getY() - entity.yOld) * delta);
+        float dz = (float) (entity.zOld + (entity.getZ() - entity.zOld) * delta);
+        matrixStack.translate(dx, dy, dz);
+        float dYaw = Mth.rotLerp(delta, entity.yRotO, entity.getYRot());
+        matrixStack.mulPose((new Quaternionf()).rotationY( -dYaw + 180));
+        matrixStack.scale(-1, -1, 1);
+        matrixStack.translate(0, -1.5f, 0);
+        PoseStack.Pose matrixEntry = matrixStack.last();
+        Matrix4f matrix4f = matrixEntry.pose();
+        matrix4f.invert();
+
+        Vector4f vec = matrix4f.transform(new Vector4f((float) worldPos.x(), (float) worldPos.y(), (float) worldPos.z(), 1.0F));
+        rotationPointX = vec.x() * 16;
+        rotationPointY = vec.y() * 16;
+        rotationPointZ = vec.z() * 16;
     }
 
 

@@ -5,7 +5,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 
-public class TabulaModelRenderUtils {
+public class LionfishModelRenderUtils {
 
     @OnlyIn(Dist.CLIENT)
     static class PositionTextureVertex {
