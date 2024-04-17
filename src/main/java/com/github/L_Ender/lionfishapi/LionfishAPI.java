@@ -1,7 +1,7 @@
 package com.github.L_Ender.lionfishapi;
 
 
-import com.github.L_Ender.lionfishapi.server.event.ExampleEvent;
+import com.github.L_Ender.lionfishapi.server.entity.ModEntities;
 import com.github.L_Ender.lionfishapi.server.network.AnimationMessage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -49,7 +49,7 @@ public class LionfishAPI {
         bus.addListener(this::setupClient);
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new ExampleEvent());
+        ModEntities.ENTITY_TYPE.register(bus);
     }
 
     public static <MSG> void sendMSGToServer(MSG message) {

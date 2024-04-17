@@ -1,14 +1,25 @@
 package com.github.L_Ender.lionfishapi.client.model.tools;
 
+import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedAnimationDefinition;
+import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedKeyframeAnimations;
 import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
 import com.github.L_Ender.lionfishapi.client.model.container.TextureOffset;
 import com.google.common.collect.Maps;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.WardenModel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 /**
  * An enhanced ModelBase
@@ -20,6 +31,8 @@ import java.util.Map;
 public abstract class AdvancedEntityModel<T extends Entity> extends BasicEntityModel<T> {
     private float movementScale = 1.0F;
     private final Map<String, TextureOffset> modelTextureMap = Maps.newHashMap();
+    private Map<String, Optional<AdvancedModelBox>> descendantCache = new HashMap<>();
+    private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
     public int texWidth = 32;
     public int texHeight = 32;
     public AdvancedEntityModel(){
@@ -265,4 +278,34 @@ public abstract class AdvancedEntityModel<T extends Entity> extends BasicEntityM
         Return a list of all parts needed to be reset every tick.
      */
     public abstract Iterable<AdvancedModelBox> getAllParts();
+
+    public Optional<AdvancedModelBox> getAnyDescendantWithName(String key) {
+        return StreamSupport.stream(this.getAllParts().spliterator(), false)
+                .filter(box -> Objects.equals(box.boxName, key))
+                .findFirst();
+    }
+
+
+    protected void animate(AnimationState p_233382_, AdvancedAnimationDefinition p_233383_, float p_233384_) {
+        this.animate(p_233382_, p_233383_, p_233384_, 1.0F);
+    }
+
+    protected void animateWalk(AdvancedAnimationDefinition p_268159_, float p_268057_, float p_268347_, float p_268138_, float p_268165_) {
+        long i = (long)(p_268057_ * 50.0F * p_268138_);
+        float f = Math.min(p_268347_ * p_268165_, 1.0F);
+        AdvancedKeyframeAnimations.animate(this, p_268159_, i, f, ANIMATION_VECTOR_CACHE);
+    }
+
+    protected void animate(AnimationState p_233386_, AdvancedAnimationDefinition p_233387_, float p_233388_, float p_233389_) {
+        p_233386_.updateTime(p_233388_, p_233389_);
+        p_233386_.ifStarted((p_233392_) -> {
+            AdvancedKeyframeAnimations.animate(this, p_233387_, p_233392_.getAccumulatedTime(), 1.0F, ANIMATION_VECTOR_CACHE);
+        });
+    }
+
+    protected void applyStatic(AdvancedAnimationDefinition p_288996_) {
+        AdvancedKeyframeAnimations.animate(this, p_288996_, 0L, 1.0F, ANIMATION_VECTOR_CACHE);
+    }
+
+
 }

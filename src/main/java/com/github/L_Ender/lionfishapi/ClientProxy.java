@@ -1,6 +1,8 @@
 package com.github.L_Ender.lionfishapi;
 
 import com.github.L_Ender.lionfishapi.client.event.ClientSetUp;
+import com.github.L_Ender.lionfishapi.client.model.render.RendererKobolediator;
+import com.github.L_Ender.lionfishapi.server.entity.ModEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +33,7 @@ public class ClientProxy extends CommonProxy {
             ClientSetUp.optifinePresent = false;
         }
         MinecraftForge.EVENT_BUS.register(new ClientSetUp());
+        EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
     }
 
     public Player getClientSidePlayer() {

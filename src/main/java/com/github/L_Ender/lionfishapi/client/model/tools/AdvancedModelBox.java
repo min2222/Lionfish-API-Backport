@@ -200,6 +200,25 @@ public class AdvancedModelBox extends BasicModelPart {
         this.rotationPointY = yIn;
         this.rotationPointZ = zIn;
     }
+
+    public void offsetPos(Vector3f p_253873_) {
+        this.rotationPointX += p_253873_.x();
+        this.rotationPointY += p_253873_.y();
+        this.rotationPointZ += p_253873_.z();
+    }
+
+    public void offsetRotation(Vector3f p_253983_) {
+        this.rotateAngleX += p_253983_.x();
+        this.rotateAngleY += p_253983_.y();
+        this.rotateAngleZ += p_253983_.z();
+    }
+
+    public void offsetScale(Vector3f p_253957_) {
+        this.scaleX += p_253957_.x();
+        this.scaleY += p_253957_.y();
+        this.scaleZ += p_253957_.z();
+    }
+
     /**
      * Sets the current pose to the previously set default pose.
      */
