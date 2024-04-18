@@ -49,7 +49,7 @@ public class LionfishAPI {
         bus.addListener(this::setupClient);
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
-        ModEntities.ENTITY_TYPE.register(bus);
+       // ModEntities.ENTITY_TYPE.register(bus);
     }
 
     public static <MSG> void sendMSGToServer(MSG message) {

@@ -23,10 +23,10 @@ public class ModEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPE = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, LionfishAPI.MODID);
 
-    public static final RegistryObject<EntityType<Kobolediator_Entity>> KOBOLEDIATOR = ENTITY_TYPE.register("kobolediator", () -> EntityType.Builder.of(Kobolediator_Entity::new, MobCategory.MONSTER)
-            .sized(2.4F, 4.4f)
-            .clientTrackingRange(8)
-            .build(LionfishAPI.MODID + ":kobolediator"));
+  //  public static final RegistryObject<EntityType<Kobolediator_Entity>> KOBOLEDIATOR = ENTITY_TYPE.register("kobolediator", () -> EntityType.Builder.of(Kobolediator_Entity::new, MobCategory.MONSTER)
+   //         .sized(2.4F, 4.4f)
+   //         .clientTrackingRange(8)
+    //        .build(LionfishAPI.MODID + ":kobolediator"));
 
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
@@ -47,7 +47,7 @@ public class ModEntities {
 
     @SubscribeEvent
     public static void initializeAttributes(EntityAttributeCreationEvent event) {
-        event.put(KOBOLEDIATOR.get(), Kobolediator_Entity.kobolediator().build());
+     //   event.put(KOBOLEDIATOR.get(), Kobolediator_Entity.kobolediator().build());
     }
 }
 

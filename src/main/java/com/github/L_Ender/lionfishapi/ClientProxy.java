@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy {
             ClientSetUp.optifinePresent = false;
         }
         MinecraftForge.EVENT_BUS.register(new ClientSetUp());
-        EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
+       // EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
     }
 
     public Player getClientSidePlayer() {

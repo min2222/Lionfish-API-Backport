@@ -458,13 +458,15 @@ public class AdvancedModelBox extends BasicModelPart {
         float dz = (float) (entity.zOld + (entity.getZ() - entity.zOld) * delta);
         matrixStack.translate(dx, dy, dz);
         float dYaw = Mth.rotLerp(delta, entity.yRotO, entity.getYRot());
-        matrixStack.mulPose((new Quaternionf()).rotationY( -dYaw + 180));
+        matrixStack.mulPose(quatFromRotationXYZ(0, -dYaw + 180, 0, true));
         matrixStack.scale(-1, -1, 1);
         matrixStack.translate(0, -1.5f, 0);
         LFRenderUtils.matrixStackFromModel(matrixStack, this);
         PoseStack.Pose matrixEntry = matrixStack.last();
         Matrix4f matrix4f = matrixEntry.pose();
-        Vector4f vec = matrix4f.transform(new Vector4f(0, 0, 0, 1.0F));
+
+        Vector4f vec = new Vector4f(0, 0, 0, 1);
+        vec.mul(matrix4f);
         return new Vec3(vec.x(), vec.y(), vec.z());
     }
 
@@ -475,18 +477,27 @@ public class AdvancedModelBox extends BasicModelPart {
         float dz = (float) (entity.zOld + (entity.getZ() - entity.zOld) * delta);
         matrixStack.translate(dx, dy, dz);
         float dYaw = Mth.rotLerp(delta, entity.yRotO, entity.getYRot());
-        matrixStack.mulPose((new Quaternionf()).rotationY( -dYaw + 180));
+        matrixStack.mulPose(quatFromRotationXYZ(0, -dYaw + 180, 0, true));
         matrixStack.scale(-1, -1, 1);
         matrixStack.translate(0, -1.5f, 0);
         PoseStack.Pose matrixEntry = matrixStack.last();
         Matrix4f matrix4f = matrixEntry.pose();
         matrix4f.invert();
 
-        Vector4f vec = matrix4f.transform(new Vector4f((float) worldPos.x(), (float) worldPos.y(), (float) worldPos.z(), 1.0F));
+        Vector4f vec = new Vector4f((float) worldPos.x(), (float) worldPos.y(), (float) worldPos.z(), 1);
+        vec.mul(matrix4f);
         rotationPointX = vec.x() * 16;
         rotationPointY = vec.y() * 16;
         rotationPointZ = vec.z() * 16;
     }
 
 
+    private Quaternionf quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
+        if (degrees) {
+            x *= ((float)Math.PI / 180F);
+            y *= ((float)Math.PI / 180F);
+            z *= ((float)Math.PI / 180F);
+        }
+        return (new Quaternionf()).rotationXYZ(x, y, z);
+    }
 }
