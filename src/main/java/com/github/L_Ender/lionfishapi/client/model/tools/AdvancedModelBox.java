@@ -27,7 +27,7 @@ public class AdvancedModelBox extends BasicModelPart {
     public float defaultRotationX, defaultRotationY, defaultRotationZ;
     public float defaultOffsetX, defaultOffsetY, defaultOffsetZ;
     public float defaultPositionX, defaultPositionY, defaultPositionZ;
-    public float scaleX = 1.0F, scaleY = 1.0F, scaleZ = 1.0F;
+    public float defaultscaleX, defaultscaleY, defaultscaleZ;
     public int textureOffsetX, textureOffsetY;
     public boolean scaleChildren;
     private AdvancedEntityModel model;
@@ -79,16 +79,19 @@ public class AdvancedModelBox extends BasicModelPart {
         this.rotateAngleX = copyFrom.rotateAngleX;
         this.rotateAngleY = copyFrom.rotateAngleY;
         this.rotateAngleZ = copyFrom.rotateAngleZ;
-        this.scaleX = copyFrom.scaleX;
-        this.scaleY = copyFrom.scaleY;
-        this.scaleZ = copyFrom.scaleZ;
+        this.xScale = copyFrom.xScale;
+        this.yScale = copyFrom.yScale;
+        this.zScale = copyFrom.zScale;
         this.defaultPositionX = copyFrom.defaultPositionX;
         this.defaultPositionY = copyFrom.defaultPositionY;
         this.defaultPositionZ = copyFrom.defaultPositionZ;
         this.defaultRotationX = copyFrom.defaultRotationX;
         this.defaultRotationY = copyFrom.defaultRotationY;
         this.defaultRotationZ = copyFrom.defaultRotationZ;
-
+        this.defaultscaleX = copyFrom.defaultscaleX;
+        this.defaultscaleY = copyFrom.defaultscaleZ;
+        this.defaultscaleZ = copyFrom.defaultscaleZ;
+        
         this.scaleChildren = copyFrom.scaleChildren;
         this.cubeList.addAll(copyFrom.cubeList);
         this.childModels = copyFrom.childModels;
@@ -147,27 +150,27 @@ public class AdvancedModelBox extends BasicModelPart {
     /**
      * Sets the scale for this AdvancedModelBox to be rendered at. (Performs a call to GLStateManager.scale()).
      *
-     * @param scaleX the x scale
-     * @param scaleY the y scale
-     * @param scaleZ the z scale
+     * @param xScale the x scale
+     * @param yScale the y scale
+     * @param zScale the z scale
      * @since 1.1.0
      */
-    public void setScale(float scaleX, float scaleY, float scaleZ) {
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
-        this.scaleZ = scaleZ;
+    public void setScale(float xScale, float yScale, float zScale) {
+        this.xScale = xScale;
+        this.yScale = yScale;
+        this.zScale = zScale;
     }
 
-    public void setScaleX(float scaleX) {
-        this.scaleX = scaleX;
+    public void setScaleX(float xScale) {
+        this.xScale = xScale;
     }
 
-    public void setScaleY(float scaleY) {
-        this.scaleY = scaleY;
+    public void setScaleY(float yScale) {
+        this.yScale = yScale;
     }
 
-    public void setScaleZ(float scaleZ) {
-        this.scaleZ = scaleZ;
+    public void setScaleZ(float zScale) {
+        this.zScale = zScale;
     }
 
     public void setIsHidden(boolean isHidden) {
@@ -193,6 +196,10 @@ public class AdvancedModelBox extends BasicModelPart {
         this.defaultPositionX = this.rotationPointX;
         this.defaultPositionY = this.rotationPointY;
         this.defaultPositionZ = this.rotationPointZ;
+
+        this.defaultscaleX = this.xScale;
+        this.defaultscaleY = this.yScale;
+        this.defaultscaleZ = this.zScale;
     }
 
     public void setPos(float xIn, float yIn, float zIn){
@@ -214,9 +221,9 @@ public class AdvancedModelBox extends BasicModelPart {
     }
 
     public void offsetScale(Vector3f p_253957_) {
-        this.scaleX += p_253957_.x();
-        this.scaleY += p_253957_.y();
-        this.scaleZ += p_253957_.z();
+        this.xScale += p_253957_.x();
+        this.yScale += p_253957_.y();
+        this.zScale += p_253957_.z();
     }
 
     /**
@@ -234,6 +241,10 @@ public class AdvancedModelBox extends BasicModelPart {
         this.rotationPointX = this.defaultPositionX;
         this.rotationPointY = this.defaultPositionY;
         this.rotationPointZ = this.defaultPositionZ;
+
+        this.xScale = this.defaultscaleX;
+        this.yScale = this.defaultscaleY;
+        this.zScale = this.defaultscaleZ;
     }
 
     @Override
@@ -300,7 +311,7 @@ public class AdvancedModelBox extends BasicModelPart {
             matrixStackIn.mulPose(Axis.XP.rotation(this.rotateAngleX));
         }
 
-        matrixStackIn.scale(this.scaleX, this.scaleY, this.scaleZ);
+        matrixStackIn.scale(this.xScale, this.yScale, this.zScale);
     }
 
     @Override
@@ -312,7 +323,7 @@ public class AdvancedModelBox extends BasicModelPart {
                 this.doRender(p_228309_1_.last(), p_228309_2_, p_228309_3_, p_228309_4_, p_228309_5_, p_228309_6_, p_228309_7_, p_228309_8_);
                 ObjectListIterator var9 = this.childModels.iterator();
                 if(!scaleChildren){
-                    p_228309_1_.scale(1F / Math.max(this.scaleX, 0.0001F), 1F / Math.max(this.scaleY, 0.0001F) , 1F / Math.max(this.scaleZ, 0.0001F));
+                    p_228309_1_.scale(1F / Math.max(this.xScale, 0.0001F), 1F / Math.max(this.yScale, 0.0001F) , 1F / Math.max(this.zScale, 0.0001F));
                 }
                 while (var9.hasNext()) {
                     BasicModelPart lvt_10_1_ = (BasicModelPart) var9.next();

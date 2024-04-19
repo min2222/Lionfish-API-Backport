@@ -9,10 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
 
 /*
  * @since 1.9.0
@@ -30,6 +27,9 @@ public class BasicModelPart {
     public float rotateAngleX;
     public float rotateAngleY;
     public float rotateAngleZ;
+    public float xScale = 1.0F;
+    public float yScale = 1.0F;
+    public float zScale = 1.0F;
     public boolean mirror;
     public boolean showModel = true;
     private final ObjectList<ModelBox> cubeList = new ObjectArrayList<>();
@@ -64,6 +64,9 @@ public class BasicModelPart {
         this.rotationPointX = BasicModelPartIn.rotationPointX;
         this.rotationPointY = BasicModelPartIn.rotationPointY;
         this.rotationPointZ = BasicModelPartIn.rotationPointZ;
+        this.xScale = BasicModelPartIn.xScale;
+        this.yScale = BasicModelPartIn.yScale;
+        this.zScale = BasicModelPartIn.zScale;
     }
 
     /**
@@ -125,7 +128,7 @@ public class BasicModelPart {
         if (this.showModel) {
             if (!this.cubeList.isEmpty() || !this.childModels.isEmpty()) {
                 matrixStackIn.pushPose();
-                this.translateRotate(matrixStackIn);
+                this.translateAndRotate(matrixStackIn);
                 this.doRender(matrixStackIn.last(), bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
                 for(BasicModelPart BasicModelPart : this.childModels) {
@@ -137,21 +140,19 @@ public class BasicModelPart {
         }
     }
 
-    public void translateRotate(PoseStack matrixStackIn) {
-        matrixStackIn.translate((double)(this.rotationPointX / 16.0F), (double)(this.rotationPointY / 16.0F), (double)(this.rotationPointZ / 16.0F));
-        if (this.rotateAngleZ != 0.0F) {
-            matrixStackIn.mulPose(Axis.ZP.rotation(this.rotateAngleZ));
+
+    public void translateAndRotate(PoseStack p_104300_) {
+        p_104300_.translate(this.rotationPointX / 16.0F, this.rotationPointY / 16.0F, this.rotationPointZ / 16.0F);
+        if (this.rotateAngleX != 0.0F || this.rotateAngleY != 0.0F || this.rotateAngleZ != 0.0F) {
+            p_104300_.mulPose((new Quaternionf()).rotationZYX(this.rotateAngleZ, this.rotateAngleY, this.rotateAngleX));
         }
 
-        if (this.rotateAngleY != 0.0F) {
-            matrixStackIn.mulPose(Axis.YP.rotation(this.rotateAngleY));
-        }
-
-        if (this.rotateAngleX != 0.0F) {
-            matrixStackIn.mulPose(Axis.XP.rotation(this.rotateAngleX));
+        if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
+            p_104300_.scale(this.xScale, this.yScale, this.zScale);
         }
 
     }
+    
 
     private void doRender(PoseStack.Pose matrixEntryIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         Matrix4f matrix4f = matrixEntryIn.pose();
