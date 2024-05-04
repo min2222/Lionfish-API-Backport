@@ -1,12 +1,13 @@
 package com.github.L_Ender.lionfishapi.client.model.Animations;
 
+import java.util.Random;
+
 import com.github.L_Ender.lionfishapi.server.entity.IIntermittentEntity;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Random;
 
 /**
  * This is a timer that can be used to easily animate models with intermittent poses. You have to set the
@@ -134,7 +135,7 @@ public class IntermittentAnimation<T extends Entity & IIntermittentEntity> {
             } else {
                 if (this.rand.nextInt(this.startProbability) == 0) {
                     this.start();
-                    this.entity.level().broadcastEntityEvent(this.entity, (byte) (this.entity.getOffsetEntityState() + this.id));
+                    this.entity.level.broadcastEntityEvent(this.entity, (byte) (this.entity.getOffsetEntityState() + this.id));
                 }
             }
         }

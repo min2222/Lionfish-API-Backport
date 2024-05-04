@@ -2,12 +2,14 @@ package com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations;
 
 
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
 
 public record AdvancedAnimationChannel(AdvancedAnimationChannel.Target target, AdvancedKeyframe... keyframes) {
+	
     @OnlyIn(Dist.CLIENT)
     public interface Interpolation {
         Vector3f apply(Vector3f p_253818_, float p_232224_, AdvancedKeyframe[] p_232225_, int p_232226_, int p_232227_, float p_232228_);
@@ -15,11 +17,12 @@ public record AdvancedAnimationChannel(AdvancedAnimationChannel.Target target, A
 
     @OnlyIn(Dist.CLIENT)
     public static class Interpolations {
-        public static final Interpolation LINEAR = (p_253292_, p_253293_, p_253294_, p_253295_, p_253296_, p_253297_) -> {
-            Vector3f vector3f = p_253294_[p_253295_].target();
-            Vector3f vector3f1 = p_253294_[p_253296_].target();
-            return vector3f.lerp(vector3f1, p_253293_, p_253292_).mul(p_253297_);
-        };
+    	public static final Interpolation LINEAR = (p_232241_, p_232242_, p_232243_, p_232244_, p_232245_, p_232246_) -> {
+    		Vector3f vector3f = p_232243_[p_232244_].target();
+    		Vector3f vector3f1 = p_232243_[p_232245_].target();
+            p_232241_.set(Mth.lerp(p_232242_, vector3f.x(), vector3f1.x()) * p_232246_, Mth.lerp(p_232242_, vector3f.y(), vector3f1.y()) * p_232246_, Mth.lerp(p_232242_, vector3f.z(), vector3f1.z()) * p_232246_);
+            return p_232241_;
+    	};
         public static final Interpolation CATMULLROM = (p_254076_, p_232235_, p_232236_, p_232237_, p_232238_, p_232239_) -> {
             Vector3f vector3f = p_232236_[Math.max(0, p_232237_ - 1)].target();
             Vector3f vector3f1 = p_232236_[p_232237_].target();

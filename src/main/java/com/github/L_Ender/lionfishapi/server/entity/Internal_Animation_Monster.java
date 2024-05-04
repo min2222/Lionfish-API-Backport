@@ -1,6 +1,9 @@
 package com.github.L_Ender.lionfishapi.server.entity;
 
 
+import java.util.List;
+import java.util.UUID;
+
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,9 +21,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-
-import java.util.List;
-import java.util.UUID;
 
 public class Internal_Animation_Monster extends Monster {
     public static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Internal_Animation_Monster.class, EntityDataSerializers.INT);
@@ -84,7 +84,7 @@ public class Internal_Animation_Monster extends Monster {
     public static void disableShield(LivingEntity livingEntity, int ticks) {
         ((Player)livingEntity).getCooldowns().addCooldown(livingEntity.getUseItem().getItem(), ticks);
         livingEntity.stopUsingItem();
-        livingEntity.level().broadcastEntityEvent(livingEntity, (byte)30);
+        livingEntity.level.broadcastEntityEvent(livingEntity, (byte)30);
     }
 
     @Override
@@ -102,13 +102,13 @@ public class Internal_Animation_Monster extends Monster {
         onDeathAIUpdate();
 
         ++this.deathTime;
-        if (this.deathTime >= deathDuration && !this.level().isClientSide() && !this.isRemoved()) {
+        if (this.deathTime >= deathDuration && !this.level.isClientSide() && !this.isRemoved()) {
             lastHurtByPlayer = killDataAttackingPlayer;
             lastHurtByPlayerTime = killDataRecentlyHit;
-            if (!this.level().isClientSide && dropAfterDeathAnim && killDataCause != null) {
+            if (!this.level.isClientSide && dropAfterDeathAnim && killDataCause != null) {
                 dropAllDeathLoot(killDataCause);
             }
-            this.level().broadcastEntityEvent(this, (byte) 60);
+            this.level.broadcastEntityEvent(this, (byte) 60);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -130,8 +130,8 @@ public class Internal_Animation_Monster extends Monster {
 
             this.dead = true;
             this.getCombatTracker().recheckStatus();
-            if (this.level() instanceof ServerLevel) {
-                if (entity == null || entity.killedEntity((ServerLevel)this.level(), this)) {
+            if (this.level instanceof ServerLevel) {
+                if (entity == null || entity.wasKilled((ServerLevel)this.level, this)) {
                     this.gameEvent(GameEvent.ENTITY_DIE);
                     this.createWitherRose(livingentity);
                     if (!dropAfterDeathAnim){
@@ -143,7 +143,7 @@ public class Internal_Animation_Monster extends Monster {
             killDataRecentlyHit = this.lastHurtByPlayerTime;
             killDataAttackingPlayer = lastHurtByPlayer;
 
-            this.level().broadcastEntityEvent(this, (byte)3);
+            this.level.broadcastEntityEvent(this, (byte)3);
             this.setPose(Pose.DYING);
         }
     }
@@ -207,6 +207,6 @@ public class Internal_Animation_Monster extends Monster {
     }
 
     public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+        return level.getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 }

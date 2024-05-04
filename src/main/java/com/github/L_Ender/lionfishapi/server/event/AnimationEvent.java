@@ -2,6 +2,7 @@ package com.github.L_Ender.lionfishapi.server.event;
 
 import com.github.L_Ender.lionfishapi.server.animation.Animation;
 import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;

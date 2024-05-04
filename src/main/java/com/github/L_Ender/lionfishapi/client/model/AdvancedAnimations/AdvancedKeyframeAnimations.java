@@ -1,15 +1,16 @@
 package com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations;
 
-import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
-import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
-import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.mojang.math.Vector3f;
+
+import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class AdvancedKeyframeAnimations {

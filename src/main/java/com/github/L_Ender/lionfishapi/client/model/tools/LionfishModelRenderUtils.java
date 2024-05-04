@@ -1,9 +1,10 @@
 package com.github.L_Ender.lionfishapi.client.model.tools;
 
+import com.mojang.math.Vector3f;
+
 import net.minecraft.core.Direction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
 
 public class LionfishModelRenderUtils {
 

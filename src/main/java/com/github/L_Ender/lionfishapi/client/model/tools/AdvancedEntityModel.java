@@ -1,25 +1,23 @@
 package com.github.L_Ender.lionfishapi.client.model.tools;
 
-import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedAnimationDefinition;
-import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedKeyframeAnimations;
-import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
-import com.github.L_Ender.lionfishapi.client.model.container.TextureOffset;
-import com.google.common.collect.Maps;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraft.client.model.WardenModel;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
+import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedAnimationDefinition;
+import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedKeyframeAnimations;
+import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
+import com.github.L_Ender.lionfishapi.client.model.container.TextureOffset;
+import com.google.common.collect.Maps;
+import com.mojang.math.Vector3f;
+
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * An enhanced ModelBase

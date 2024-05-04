@@ -1,12 +1,14 @@
 package com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations;
 
-import com.google.common.collect.Maps;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.commons.compress.utils.Lists;
-
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.compress.utils.Lists;
+
+import com.google.common.collect.Maps;
+
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public record AdvancedAnimationDefinition(float lengthInSeconds, boolean looping, Map<String, List<AdvancedAnimationChannel>> boneAnimations) {

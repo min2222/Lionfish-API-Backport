@@ -1,12 +1,12 @@
 package com.github.L_Ender.lionfishapi.server.network;
 
+import java.util.function.Supplier;
+
 import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 public class AnimationMessage {
     private int entityID;

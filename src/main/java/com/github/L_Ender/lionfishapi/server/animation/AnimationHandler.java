@@ -1,12 +1,14 @@
 package com.github.L_Ender.lionfishapi.server.animation;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.github.L_Ender.lionfishapi.LionfishAPI;
 import com.github.L_Ender.lionfishapi.server.event.AnimationEvent;
 import com.github.L_Ender.lionfishapi.server.network.AnimationMessage;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.PacketDistributor;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author iLexiconn
@@ -23,7 +25,7 @@ public enum AnimationHandler {
      * @param <T>       the entity type
      */
     public <T extends Entity & IAnimatedEntity> void sendAnimationMessage(T entity, Animation animation) {
-        if (entity.level().isClientSide) {
+        if (entity.level.isClientSide) {
             return;
         }
         entity.setAnimation(animation);

@@ -1,13 +1,19 @@
 package com.github.L_Ender.lionfishapi.client.screen;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.*;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 
 public class OptifineWarningScreen extends Screen {
 
@@ -34,7 +40,9 @@ public class OptifineWarningScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
-		this.exitButton = this.addRenderableWidget(Button.builder(CommonComponents.GUI_PROCEED, (pressed) -> Minecraft.getInstance().setScreen(this.lastScreen)).bounds(this.width / 2 - 75, this.height * 3 / 4, 150, 20).build());
+		this.exitButton = this.addRenderableWidget(new Button(this.width / 2 - 75, this.height * 3 / 4, 150, 20, CommonComponents.GUI_PROCEED, (p_232842_) -> {
+			Minecraft.getInstance().setScreen(this.lastScreen);
+		}));
 		this.exitButton.active = true;
 		this.message = MultiLineLabel.create(this.font, text, this.width - 25);
 		this.xenonsuggestions = MultiLineLabel.create(this.font, xenonurl, this.width - 35);
@@ -42,9 +50,9 @@ public class OptifineWarningScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack graphics, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(graphics);
-		graphics.drawCenteredString(this.font, this.title, this.width / 2, 30, 16777215);
+		drawCenteredString(graphics, this.font, this.title, this.width / 2, 30, 16777215);
 		this.message.renderCentered(graphics, this.width / 2, 70);
 		this.xenonsuggestions.renderCentered(graphics, this.width / 2, 120);
 		this.oculussuggestions.renderCentered(graphics, this.width / 2, 160);

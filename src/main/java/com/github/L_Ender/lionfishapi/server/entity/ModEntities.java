@@ -1,22 +1,21 @@
 package com.github.L_Ender.lionfishapi.server.entity;
 
 
+import java.util.function.Predicate;
+
 import com.github.L_Ender.lionfishapi.LionfishAPI;
 import com.google.common.base.Predicates;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = LionfishAPI.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities {

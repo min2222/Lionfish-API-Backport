@@ -3,6 +3,7 @@ package com.github.L_Ender.lionfishapi.client.model.tools;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -77,7 +78,7 @@ public class DynamicChain {
                         gravityAmount * d[i+1] * m[i+1] * (Math.sin(down - r[i].y + down)),
                         0));
                 Vec3 floorVec = new Vec3(0, 1 * d[i+1] * m[i+1] * (Math.sin(Math.PI/2 - r[i].y + Math.PI/2)), 0);
-                if (useFloor && entity.onGround() && p[i+1].y < entity.getY()) {
+                if (useFloor && entity.isOnGround() && p[i+1].y < entity.getY()) {
                     T[i] = T[i].subtract(floorVec);
                 }
                 T[i] = wrapAngles(T[i].add(gravityVec));

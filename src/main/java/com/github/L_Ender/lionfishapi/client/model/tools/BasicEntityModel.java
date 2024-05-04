@@ -1,13 +1,14 @@
 package com.github.L_Ender.lionfishapi.client.model.tools;
 
+import java.util.function.Function;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-
-import java.util.function.Function;
 
 public abstract class BasicEntityModel<T extends Entity> extends EntityModel<T> {
     public int textureWidth = 64;

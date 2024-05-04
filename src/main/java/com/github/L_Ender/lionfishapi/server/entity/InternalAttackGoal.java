@@ -1,9 +1,9 @@
 package com.github.L_Ender.lionfishapi.server.entity;
 
+import java.util.EnumSet;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-
-import java.util.EnumSet;
 
 public class InternalAttackGoal extends Goal {
     protected final Internal_Animation_Monster entity;

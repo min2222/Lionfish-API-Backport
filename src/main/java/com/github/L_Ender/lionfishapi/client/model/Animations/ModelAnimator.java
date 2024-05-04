@@ -1,15 +1,16 @@
 package com.github.L_Ender.lionfishapi.client.model.Animations;
 
+import java.util.HashMap;
+
 import com.github.L_Ender.lionfishapi.client.model.Transform;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.server.animation.Animation;
 import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.HashMap;
 
 /**
  * @author Alexthe666

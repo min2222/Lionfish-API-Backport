@@ -2,14 +2,17 @@ package com.github.L_Ender.lionfishapi.client.model.tools;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
+
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.*;
 
 /*
  * @since 1.9.0
@@ -144,7 +147,9 @@ public class BasicModelPart {
     public void translateAndRotate(PoseStack p_104300_) {
         p_104300_.translate(this.rotationPointX / 16.0F, this.rotationPointY / 16.0F, this.rotationPointZ / 16.0F);
         if (this.rotateAngleX != 0.0F || this.rotateAngleY != 0.0F || this.rotateAngleZ != 0.0F) {
-            p_104300_.mulPose((new Quaternionf()).rotationZYX(this.rotateAngleZ, this.rotateAngleY, this.rotateAngleX));
+        	p_104300_.mulPose(Vector3f.ZP.rotation(this.rotateAngleZ));
+            p_104300_.mulPose(Vector3f.YP.rotation(this.rotateAngleY));
+            p_104300_.mulPose(Vector3f.XP.rotation(this.rotateAngleX));
         }
 
         if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
@@ -160,8 +165,8 @@ public class BasicModelPart {
 
         for(ModelBox BasicModelPart$modelbox : this.cubeList) {
             for(TexturedQuad BasicModelPart$texturedquad : BasicModelPart$modelbox.quads) {
-                Vector3f vector3f = new Vector3f(BasicModelPart$texturedquad.normal);
-                vector3f.mul(matrix3f);
+                Vector3f vector3f = BasicModelPart$texturedquad.normal.copy();
+                vector3f.transform(matrix3f);
                 float f = vector3f.x();
                 float f1 = vector3f.y();
                 float f2 = vector3f.z();
@@ -172,7 +177,7 @@ public class BasicModelPart {
                     float f4 = BasicModelPart$positiontexturevertex.position.y() / 16.0F;
                     float f5 = BasicModelPart$positiontexturevertex.position.z() / 16.0F;
                     Vector4f vector4f = new Vector4f(f3, f4, f5, 1.0F);
-                    vector4f.mul(matrix4f);
+                    vector4f.transform(matrix4f);
                     bufferIn.vertex(vector4f.x(), vector4f.y(), vector4f.z(), red, green, blue, alpha, BasicModelPart$positiontexturevertex.textureU, BasicModelPart$positiontexturevertex.textureV, packedOverlayIn, packedLightIn, f, f1, f2);
                 }
             }

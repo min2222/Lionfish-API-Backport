@@ -1,6 +1,7 @@
 package com.github.L_Ender.lionfishapi.client.event;
 
 import com.github.L_Ender.lionfishapi.client.screen.OptifineWarningScreen;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraftforge.api.distmarker.Dist;
